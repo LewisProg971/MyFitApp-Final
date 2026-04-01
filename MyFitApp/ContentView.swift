@@ -1,61 +1,39 @@
-//
-//  ContentView.swift
-//  MyFitApp
-//
-//  Created by CRANE Lewis on 23/03/2026.
-//
-
 import SwiftUI
 import SwiftData
 
 struct ContentView: View {
-    @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
-
     var body: some View {
-        NavigationSplitView {
-            List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
-                    } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
-                    }
+        TabView {
+            // Tab 1 : Calendrier
+            // Tab 1 : Calendrier
+                        CalendrierView()
+                            .tabItem {
+                                Label("Calendrier", systemImage: "calendar")
+                            }
+            
+            // Tab 2 : Entraînement (Sport)
+            SportView()
+                .tabItem {
+                    Label("Sport", systemImage: "figure.strengthtraining.traditional")
                 }
-                .onDelete(perform: deleteItems)
-            }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
+            
+            // Tab 3 : Nutrition
+                        NutritionView()
+                            .tabItem {
+                                Label("Nutrition", systemImage: "fork.knife")
+                            }
+            
+            // Tab 4 : Ressources
+            RessourcesView()
+                .tabItem {
+                    Label("Ressources", systemImage: "play.tv")
                 }
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
-                    }
-                }
-            }
-        } detail: {
-            Text("Select an item")
         }
-    }
-
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(timestamp: Date())
-            modelContext.insert(newItem)
-        }
-    }
-
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(items[index])
-            }
-        }
+        // Pour être sûr que la barre s'affiche bien visuellement
+        .tint(.blue)
     }
 }
 
 #Preview {
     ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
 }
