@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		F6E71E282F7DB47E00439AFC /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = F6E71E272F7DB47800439AFC /* README.md */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		F6AA12D92F71E2BA002462BE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -27,6 +31,7 @@
 		F6AA12C92F71E2B9002462BE /* MyFitApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyFitApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6AA12D82F71E2BA002462BE /* MyFitAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyFitAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6AA12E22F71E2BA002462BE /* MyFitAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyFitAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6E71E272F7DB47800439AFC /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -75,6 +80,7 @@
 		F6AA12C02F71E2B9002462BE = {
 			isa = PBXGroup;
 			children = (
+				F6E71E272F7DB47800439AFC /* README.md */,
 				F6AA12CB2F71E2B9002462BE /* MyFitApp */,
 				F6AA12DB2F71E2BA002462BE /* MyFitAppTests */,
 				F6AA12E52F71E2BA002462BE /* MyFitAppUITests */,
@@ -212,6 +218,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6E71E282F7DB47E00439AFC /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -395,6 +402,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -426,6 +434,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

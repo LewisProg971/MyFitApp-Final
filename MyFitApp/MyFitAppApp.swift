@@ -7,7 +7,7 @@ struct MyFitAppApp: App {
         WindowGroup {
             ContentView()
         }
-        // C'est cette ligne qui active la base de données pour toute l'app !
+        // On repasse en 100% local, sans iCloud
         .modelContainer(for: [
             Programme.self,
             Seance.self,

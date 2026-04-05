@@ -4,9 +4,11 @@ import SwiftData
 struct CalendrierView: View {
     @Environment(\.modelContext) private var context
     @Query private var toutesLesJournees: [Journee]
-    @State private var dateSelectionnee = Date()
     
-    // 👉 Le déclencheur de la fenêtre est bien à la racine de l'écran
+    // 👉 On ajoute cette ligne pour avoir accès à tout ton carnet d'exercices
+    @Query private var tousLesExercices: [ExerciceProgramme]
+    
+    @State private var dateSelectionnee = Date()
     @State private var montrantAjoutRepas = false
     
     var journeeActuelle: Journee? {
@@ -27,7 +29,6 @@ struct CalendrierView: View {
                     if let journee = journeeActuelle {
                         SectionHydratation(journee: journee)
                         
-                        // Quand on clique, on passe la variable à TRUE
                         SectionNutrition(journee: journee, actionOuvrirFenetre: {
                             montrantAjoutRepas = true
                         })
@@ -42,16 +43,19 @@ struct CalendrierView: View {
                     }
                 }
                 .padding(.top)
-                // 👉 LA SOLUTION MAGIQUE POUR LE SCROLL :
-                // On dit à la ScrollView de toujours garder 150 pixels de marge en bas,
-                // ce qui repousse le contenu au-dessus de la barre de navigation.
                 .safeAreaPadding(.bottom, 150)
             }
             .navigationTitle("Mon Suivi")
-            // 👉 LA SOLUTION ANTI-FREEZE : La .sheet est attachée à la NavigationStack (le mur porteur).
-            // Elle ne plantera plus jamais.
+            .toolbar {
+                if let journee = journeeActuelle {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        ShareLink(item: genererPDF(journee: journee)) {
+                            Label("Exporter PDF", systemImage: "square.and.arrow.up")
+                        }
+                    }
+                }
+            }
             .sheet(isPresented: $montrantAjoutRepas) {
-                // On vérifie que la journée existe bien avant d'ouvrir la vue
                 if let journee = journeeActuelle {
                     AjoutRepasView(journee: journee)
                 }
@@ -63,6 +67,35 @@ struct CalendrierView: View {
         let nouvelleJournee = Journee(date: dateSelectionnee)
         context.insert(nouvelleJournee)
     }
+    
+    @MainActor
+        func genererPDF(journee: Journee) -> URL {
+            var perfsDuJour: [PerfPDF] = []
+            for exo in tousLesExercices {
+                for perf in exo.performances {
+                    if Calendar.current.isDate(perf.date, inSameDayAs: journee.date) {
+                        perfsDuJour.append(PerfPDF(nomExo: exo.nom, charge: perf.charge, sensation: perf.sensation))
+                    }
+                }
+            }
+            
+            let renderer = ImageRenderer(content: RecapPDFView(journee: journee, performances: perfsDuJour))
+            
+            // 👉 LA CORRECTION EST ICI : On utilise "temporaryDirectory" pour autoriser le partage
+            let url = URL.temporaryDirectory.appending(path: "Bilan_MyFitApp.pdf")
+            
+            renderer.render { size, context in
+                var box = CGRect(origin: .zero, size: size)
+                guard let pdfContext = CGContext(url as CFURL, mediaBox: &box, nil) else { return }
+                
+                pdfContext.beginPDFPage(nil)
+                context(pdfContext)
+                pdfContext.endPDFPage()
+                pdfContext.closePDF()
+            }
+            
+            return url
+        }
 }
 
 // MARK: - Sous-vue pour l'Hydratation
