@@ -117,9 +117,15 @@ struct SectionHydratation: View {
                 .padding(.vertical, 5)
             
             HStack {
-                Button("+ 0.25L (Verre)") { journee.consommationEau += 0.25 }
+                Button("+ 0.25L (Verre)") {
+                    journee.consommationEau += 0.25
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                }
                 Spacer()
-                Button("+ 0.5L (Gourde)") { journee.consommationEau += 0.5 }
+                Button("+ 0.5L (Gourde)") {
+                    journee.consommationEau += 0.5
+                    UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                }
             }
             .buttonStyle(.bordered)
             .tint(.cyan)
